@@ -1,21 +1,25 @@
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import request from 'supertest';
 import mongoose from 'mongoose';
-
 import { app } from '../app';
 
+// declare global {
+//   namespace NodeJS {
+//     interface Global {
+//       // signup(): string[]//: Promise<string[]>;
+//     }
+//   }
+// }
+
 declare global {
-  namespace NodeJS {
-    interface Global {
-      // signup(): string[]//: Promise<string[]>;
-    }
-  }
+  var signup: () => Promise<string[]>;
 }
 
 let mongo: any;
 
 beforeAll(async () => {
   process.env.JWT_KEY = 'asdfasdf';
+  // process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
 
   mongo = await MongoMemoryServer.create();
   const mongoUri = await mongo.getUri();
